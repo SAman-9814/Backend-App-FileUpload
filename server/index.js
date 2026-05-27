@@ -29,6 +29,10 @@ const Upload = require("./routes/FileUpload");
 app.use('/api/v1/upload', Upload);
 
 //activate server
-app.listen(PORT, () => {
-    console.log(`App is running at ${PORT}`);
-})
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`App is running at ${PORT}`);
+    });
+}
+
+module.exports = app;
