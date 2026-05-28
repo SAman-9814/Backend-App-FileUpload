@@ -424,7 +424,7 @@ export default function App() {
       <main className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 items-start relative z-10">
         
         {/* Upload Form Area */}
-        <section className="lg:col-span-5 glass-panel rounded-3xl p-6 md:p-8 flex flex-col gap-6 relative overflow-hidden transition-all duration-300">
+        <section className="lg:col-span-5 glass-panel rounded-3xl p-6 md:p-8 flex flex-col gap-6 relative transition-all duration-300">
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent"></div>
           
           <div className={`border-b pb-4 ${isDarkMode ? "border-slate-800/60" : "border-slate-200"}`}>
@@ -665,7 +665,7 @@ export default function App() {
 
         {/* Gallery / History logs */}
         <section className="lg:col-span-7 flex flex-col gap-6">
-          <div className="glass-panel rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col gap-6 min-h-[500px]">
+          <div className="glass-panel rounded-3xl p-6 shadow-xl relative flex flex-col gap-6 min-h-[500px]">
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent"></div>
 
             {/* Header info */}
@@ -716,7 +716,7 @@ export default function App() {
               </div>
             ) : isLoadingGallery ? (
               /* Shimmer Loading Grid */
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-h-[580px] overflow-y-auto pr-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-h-[580px] overflow-y-auto pr-1 pb-6">
                 {[1, 2, 3, 4].map((n) => (
                   <div key={n} className={`border rounded-2xl p-4 flex flex-col gap-4 shimmer ${
                     isDarkMode ? "border-slate-900 bg-slate-950/20" : "border-slate-200 bg-slate-50"
@@ -741,7 +741,7 @@ export default function App() {
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-h-[580px] overflow-y-auto pr-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-h-[580px] overflow-y-auto pr-1 pb-6">
                 {gallery.filter((item) => {
                   if (!searchQuery.trim()) return true;
                   const q = searchQuery.toLowerCase();
