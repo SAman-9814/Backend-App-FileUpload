@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const File = require("../models/File");
 const cloudinary = require("cloudinary").v2;
 
@@ -37,12 +38,13 @@ exports.localFileUpload = async (req, res) => {
 
         // Create destination path
         const ext = file.name.split(".").pop();
-        const destPath = `${__dirname}/files/${Date.now()}.${ext}`;
+        const destPath = path.join(__dirname, "files", `${Date.now()}.${ext}`);
         console.log("Destination path:", destPath);
 
         // Ensure files directory exists
-        if (!fs.existsSync(`${__dirname}/files`)) {
-            fs.mkdirSync(`${__dirname}/files`, { recursive: true });
+        const filesDir = path.join(__dirname, "files");
+        if (!fs.existsSync(filesDir)) {
+            fs.mkdirSync(filesDir, { recursive: true });
         }
 
         // Await the file move — wrap callback in a Promise

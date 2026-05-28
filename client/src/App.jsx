@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import {
   Upload,
@@ -43,7 +43,7 @@ export default function App() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [toasts, setToasts] = useState([]);
   const [gallery, setGallery] = useState([]);
-  const [isLoadingGallery, setIsLoadingGallery] = useState(false);
+  const [isLoadingGallery, setIsLoadingGallery] = useState(true);
   const [copiedId, setCopiedId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [deletingId, setDeletingId] = useState(null);
@@ -62,8 +62,12 @@ export default function App() {
     }
   }, [isDarkMode]);
 
+  const removeToast = useCallback((id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
   // Helper to trigger toast notifications
-  const addToast = (message, type = "success") => {
+  const addToast = useCallback((message, type = "success") => {
     const id = Date.now();
     setToasts((prev) => [...prev, { id, message, type }]);
     
@@ -71,15 +75,10 @@ export default function App() {
     setTimeout(() => {
       removeToast(id);
     }, 4000);
-  };
-
-  const removeToast = (id) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
+  }, [removeToast]);
 
   // Fetch gallery items
-  const fetchGallery = async () => {
-    setIsLoadingGallery(true);
+  const fetchGallery = useCallback(async () => {
     try {
       const response = await axios.get(`${API_BASE}/getFiles`);
       if (response.data && response.data.success) {
@@ -93,11 +92,14 @@ export default function App() {
         setIsLoadingGallery(false);
       }, 600);
     }
-  };
+  }, [addToast]);
 
   useEffect(() => {
-    fetchGallery();
-  }, []);
+    const timer = setTimeout(() => {
+      fetchGallery();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchGallery]);
 
   // Handle Tab Switch
   const handleTabChange = (tab) => {
@@ -238,6 +240,7 @@ export default function App() {
           if (fileInputRef.current) fileInputRef.current.value = "";
           // Refresh gallery for Cloudinary uploads
           if (activeTab !== "local") {
+            setIsLoadingGallery(true);
             fetchGallery();
           }
         }, 300);
@@ -676,7 +679,10 @@ export default function App() {
                   <p className={`text-xs mt-1 ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Showing all file logs saved to MongoDB.</p>
                 </div>
                 <button
-                  onClick={fetchGallery}
+                  onClick={() => {
+                    setIsLoadingGallery(true);
+                    fetchGallery();
+                  }}
                   disabled={isLoadingGallery}
                   className={`p-2 rounded-xl border hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center shadow-sm ${
                     isDarkMode 

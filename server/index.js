@@ -35,4 +35,9 @@ if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
     });
 }
 
-module.exports = app;
+//default Route
+app.get("/", (req, res) => {
+    res.send(`<h1>This is Aman Sah</h1>`);
+})
+
+// module.exports = app;
