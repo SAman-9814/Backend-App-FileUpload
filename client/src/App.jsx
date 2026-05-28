@@ -314,8 +314,8 @@ export default function App() {
                 : "bg-white border-indigo-300 text-slate-800 shadow-indigo-100/30"
             }`}
           >
-            <div className="flex items-center gap-3">
-              <div className={`p-1.5 rounded-lg ${
+            <div className="flex items-center gap-3 min-w-0">
+              <div className={`p-1.5 rounded-lg flex-shrink-0 ${
                 toast.type === "success" 
                   ? "bg-emerald-500/10 text-emerald-550" 
                   : toast.type === "error" 
@@ -323,12 +323,12 @@ export default function App() {
                   : "bg-indigo-500/10 text-indigo-550"
               }`}>
                 {toast.type === "success" ? (
-                  <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+                  <CheckCircle2 className="w-4 h-4" />
                 ) : (
-                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <AlertCircle className="w-4 h-4" />
                 )}
               </div>
-              <span className="text-sm font-semibold">{toast.message}</span>
+              <span className="text-sm font-semibold break-words">{toast.message}</span>
             </div>
 
             {/* Manual Dismiss Cross Button */}
@@ -670,13 +670,13 @@ export default function App() {
 
             {/* Header info */}
             <div className={`flex flex-col gap-3 border-b pb-4 ${isDarkMode ? "border-slate-800/60" : "border-slate-200"}`}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-lg font-bold flex items-center gap-2">
-                    <Image className="w-5 h-5 text-indigo-400" />
-                    Cloud Media Gallery
+              <div className="flex items-center justify-between gap-3 min-w-0">
+                <div className="min-w-0">
+                  <h2 className="text-base sm:text-lg font-bold flex items-center gap-2 truncate">
+                    <Image className="w-5 h-5 text-indigo-400 flex-shrink-0" />
+                    <span className="truncate">Cloud Media Gallery</span>
                   </h2>
-                  <p className={`text-xs mt-1 ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Showing all file logs saved to MongoDB.</p>
+                  <p className={`text-xs mt-1 truncate ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Showing all file logs saved to MongoDB.</p>
                 </div>
                 <button
                   onClick={() => {
@@ -865,7 +865,8 @@ export default function App() {
                             {item.tags.split(",").map((tag, idx) => (
                               <span
                                 key={idx}
-                                className={`text-[9px] px-1.5 py-0.5 rounded-md border font-bold ${
+                                title={tag.trim()}
+                                className={`text-[9px] px-1.5 py-0.5 rounded-md border font-bold truncate max-w-full ${
                                   isDarkMode 
                                     ? "bg-indigo-500/10 text-indigo-300 border-indigo-500/10" 
                                     : "bg-indigo-500/8 text-indigo-700 border-indigo-500/10"
@@ -880,7 +881,7 @@ export default function App() {
 
                       {/* Video Row Buttons */}
                       {isVideo && (
-                        <div className={`grid grid-cols-2 gap-2 mt-2 pt-2 border-t ${
+                        <div className={`grid grid-cols-1 min-[450px]:grid-cols-2 gap-2 mt-2 pt-2 border-t ${
                           isDarkMode ? "border-slate-900/60" : "border-slate-200"
                         }`}>
                           <button
